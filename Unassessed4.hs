@@ -39,3 +39,34 @@ dezip :: [(a,b)] -> ([a],[b])
 dezip = foldr f ([], [])
   where
     f (x, y) (l1, l2) = (x : l1, y : l2)
+
+-- 2.
+
+allSame :: [Int] -> Bool
+-- allSame []            = True
+-- allSame (x : [])      = True
+-- allSame (x : x' : xs) = x == x' && allSame (x' : xs)
+
+allSame list = and (zipWith (==) list (tail list))
+
+-- 3.
+
+facts :: [Double]
+facts = scanl (*) 1 [1..]
+
+e_approx :: Int -> Double
+e_approx n = sum $ take n (map ((/) (fromIntegral 1)) facts)
+
+mystery = 1 : scanl (+) 1 mystery -- FIBONACCI
+
+-- 4.
+squash :: (a -> a -> b) -> [a] -> [b]
+
+-- squash _ [] = []
+-- squash f [x] = []
+-- squash f (x : x' : xs) = f x x' : squash f (x' : xs)
+
+squash f l = zipWith f (tail l) l
+
+
+-- 5. 
