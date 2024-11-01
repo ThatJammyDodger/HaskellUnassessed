@@ -1,6 +1,7 @@
 module Unassessed4 where
 
 import Data.Char
+import Data.List
 
 
 --1.
@@ -52,10 +53,10 @@ allSame list = and (zipWith (==) list (tail list))
 -- 3.
 
 facts :: [Double]
-facts = scanl (*) 1 [1..]
+facts = scanl' (*) 1 [1..]
 
-e_approx :: Int -> Double
-e_approx n = sum $ take n (map ((/) (fromIntegral 1)) facts)
+eApprox :: Int -> Double
+eApprox n = sum $ take n (map (1 /) facts)
 
 mystery = 1 : scanl (+) 1 mystery -- FIBONACCI
 
@@ -70,3 +71,33 @@ squash f l = zipWith f (tail l) l
 
 
 -- 5. 
+converge :: forall a. (a -> a -> Bool) -> [a] -> a
+converge f xs = go xs (tail xs)
+  where 
+    go :: [a] -> [a] -> a
+    go [x] [] = x
+    go (y : ys) (z : zs)
+      | f y z     = y
+      | otherwise = go ys zs
+
+e :: Double
+-- e = converge (==) (scanl (\y x -> y + recip x) 0 (scanl (*) 1 [1..]))
+-- point free using pointfree.io
+e = converge (==) (scanl ((. recip) . (+)) 0 (scanl (*) 1 [1..]))
+
+
+-- 7.
+-- any :: (a -> Bool) -> [a] -> Bool
+-- any f = or . map f
+all :: (a -> Bool) -> [a] -> Bool
+all f = and . map f
+
+
+-- 8.
+isElem :: Eq a => a -> [a] -> Bool
+isElem = any . (==)
+
+
+-- 9b
+(<.>) :: (c -> d) -> (a -> b -> c) -> (a -> b -> d)
+(<.>) = (.) . (.)
