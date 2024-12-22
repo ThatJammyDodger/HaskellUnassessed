@@ -12,7 +12,7 @@ import Data.List
 -- depunctuate = foldr (\x acc -> if elem x ['.', ',', ':'] then acc else x : acc) [] 
 
 depunctuate :: [Char] -> [Char]
-depunctuate = filter (\x -> not (elem x ['.', ',', ':']))
+depunctuate = filter (\x -> x `notElem` ['.', ',', ':'])
 
 makeString :: [Int] -> [Char]
 makeString = map chr
