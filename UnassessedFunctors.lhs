@@ -29,7 +29,7 @@ as a functor.
 <                                  = Just ((f . g) x)
 <                                  = maybeMap (f . g) (Just x)
 
-(c) checking something else
+(c) checking another thing
 
 functor laws require:
 < oddMap id (Just x) = id (Just x)
